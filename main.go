@@ -17,7 +17,7 @@ var Topics string
 const (
 	baseURL       = "https://en.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles="
 	wordSeperator = "%20"
-	endingURL     = "&exintro=1"
+	endingURL     = "&exsentences=2"
 )
 
 type Text struct {
@@ -66,7 +66,7 @@ func SearchTopicOnWikipedia(query string) {
 	rawText := ""
 	p := bluemonday.StripTagsPolicy()
 
-	queryString := strings.ReplaceAll(query, " ", wordSeperator)
+	queryString := strings.ReplaceAll(query, " ", wordSeperator)	
 
 	resp, err := http.Get(baseURL + queryString + endingURL)
 	defer resp.Body.Close()
@@ -92,7 +92,6 @@ func SearchTopicOnWikipedia(query string) {
 
 		html := p.Sanitize(rawText)
 		fmt.Println(html)
-
 	} else {
 		fmt.Printf("%s not found\n", query)
 	}
